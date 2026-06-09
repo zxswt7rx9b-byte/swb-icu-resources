@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SWB ICU — New Doctor Induction Guide</title>
+<style>
+/* ================================================================
+   ICU INDUCTION GUIDE — STYLE
+   To edit content: find the GUIDE_SECTIONS array in the <script>
+   To add a section: add a new object to that array
+   ================================================================ */
+:root {
+  --orange:  #F49001;
+  --magenta: #BF0278;
+  --cyan:    #07A6D5;
+  --purple:  #44247C;
+  --blue:    #0067A4;
+  --light:   #f7f8fc;
+  --text:    #1e1e2e;
+  --muted:   #6b7280;
+  --sidebar-w: 270px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background: var(--light);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ---- Sidebar ---- */
+#sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--purple);
+  color: #fff;
+  overflow-y: auto;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-head {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.sidebar-tagline {
+  font-size: 11px;
+  color: rgba(255,255,255,0.55);
+  margin-top: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.nav-list { padding: 12px 0; flex: 1; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.72);
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  border-left: 3px solid transparent;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.nav-item.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-left-color: var(--orange);
+}
+
+.nav-item .ni { font-size: 15px; width: 22px; text-align: center; flex-shrink: 0; }
+
+.sidebar-foot {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+  flex-shrink: 0;
+}
+
+/* ---- Main ---- */
+#main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+#topbar {
+  background: #fff;
+  border-bottom: 3px solid var(--orange);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+#menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 22px;
+  color: var(--purple);
+  padding: 2px 6px;
+}
+
+.topbar-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--purple);
+  flex: 1;
+}
+
+.topbar-voice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.topbar-voice select {
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 4px 8px;
+  color: var(--text);
+  background: #fff;
+  cursor: pointer;
+}
+
+/* ---- Content ---- */
+#content { padding: 32px; max-width: 860px; }
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
+  border-radius: 16px;
+  padding: 44px 48px;
+  color: #fff;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+
+.hero h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.hero .hero-sub {
+  font-size: 17px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.hero .hero-meta {
+  font-size: 13px;
+  opacity: 0.55;
+  margin-bottom: 28px;
+}
+
+.btn-guide {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--orange);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-guide:hover { background: #d97f00; transform: translateY(-1px); }
+
+.btn-guide + .btn-guide {
+  background: rgba(255,255,255,0.15);
+  margin-left: 10px;
+}
+
+.btn-guide + .btn-guide:hover { background: rgba(255,255,255,0.25); }
+
+/* Section cards */
+.section-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06), 0 3px 16px rgba(0,0,0,0.03);
+  scroll-margin-top: 78px;
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 22px;
+}
+
+.sc-icon {
+  font-size: 22px;
+  width: 46px; height: 46px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+}
+
+.sc-titles { flex: 1; min-width: 0; }
+
+.sc-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.sc-tag {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  margin-top: 3px;
+}
+
+.sc-play {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.18);
+  border: none;
+  color: #fff;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+
+.sc-play:hover { background: rgba(255,255,255,0.32); }
+.sc-play.active { background: rgba(255,255,255,0.4); }
+
+.section-card-body {
+  padding: 22px 24px;
+}
+
+.section-card-body p { margin-bottom: 12px; line-height: 1.75; font-size: 14.5px; }
+.section-card-body p:last-child { margin-bottom: 0; }
+
+.section-card-body h3 {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--purple);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin: 20px 0 10px;
+}
+
+.section-card-body ul {
+  margin: 0 0 12px 18px;
+}
+
+.section-card-body ul li {
+  margin-bottom: 7px;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.section-card-body .callout {
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 14px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.callout-info { background: #eef6fd; border-left: 4px solid var(--cyan); }
+.callout-warn { background: #fff4e8; border-left: 4px solid var(--orange); }
+.callout-key  { background: #f3eeff; border-left: 4px solid var(--purple); }
+.callout-imp  { background: #fdeef5; border-left: 4px solid var(--magenta); }
+
+.callout strong { display: block; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.6; }
+
+/* Role grid */
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.role-card {
+  padding: 14px 12px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.07);
+}
+
+.role-card .role-name {
+  font-size: 13px;
+  font-weight: 700;
+  margin-top: 6px;
+  color: var(--text);
+}
+
+.role-card .role-desc {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+/* Day/Night timeline */
+.timeline {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 52px;
+}
+
+.tl-block {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tl-block small { font-weight: 400; opacity: 0.75; font-size: 10px; }
+
+/* Narration bar */
+#narration-bar {
+  position: fixed;
+  bottom: 0;
+  left: var(--sidebar-w);
+  right: 0;
+  background: #14112a;
+  border-top: 2px solid var(--purple);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 300;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+#narration-bar.visible { transform: translateY(0); }
+
+.nb-section {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nb-subtitle {
+  flex: 1;
+  font-size: 14px;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.4;
+  min-width: 0;
+}
+
+.nb-subtitle .nb-done { color: rgba(255,255,255,0.35); }
+.nb-subtitle .nb-now  { color: #fff; font-weight: 600; }
+
+.nb-stop {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.15s;
+}
+
+.nb-stop:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Mobile */
+@media (max-width: 768px) {
+  #sidebar { transform: translateX(-100%); }
+  #sidebar.open { transform: translateX(0); }
+  #sidebar-overlay { display: block !important; }
+  #main { margin-left: 0; }
+  #narration-bar { left: 0; }
+  #menu-toggle { display: block; }
+  #content { padding: 16px; }
+  .hero { padding: 28px 24px; }
+  .hero h1 { font-size: 22px; }
+}
+
+#sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+}
+</style>
+</head>
+<body>
+
+<!-- Mobile overlay -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-head">
+    <div class="sidebar-brand">SWB ICU</div>
+    <div class="sidebar-tagline">New Doctor Induction</div>
+  </div>
+  <div class="nav-list" id="nav-list">
+    <!-- Populated by JS -->
+  </div>
+  <div class="sidebar-foot">
+    Sandwell &amp; West Birmingham NHS Trust
+  </div>
+</nav>
+
+<!-- Main content -->
+<div id="main">
+  <div id="topbar">
+    <button id="menu-toggle" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+    <div class="topbar-title">ICU Induction Guide</div>
+    <div class="topbar-voice">
+      <span id="voice-label">Voice:</span>
+      <select id="voice-select">
+        <option value="">Loading voices…</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="content">
+    <!-- Hero -->
+    <div class="hero" id="section-welcome">
+      <h1>Working in SWB ICU</h1>
+      <div class="hero-sub">Medical Team — Structure &amp; Ways of Working</div>
+      <div class="hero-meta">Presented by Jon Hulme &bull; Sandwell &amp; West Birmingham NHS Trust</div>
+      <button class="btn-guide" onclick="playAllSections()">&#9654; Start narrated guide</button>
+      <button class="btn-guide" id="hero-play-btn" onclick="playSectionById('welcome')">&#9654; Narrate this intro</button>
+    </div>
+
+    <!-- Section cards rendered by JS -->
+    <div id="sections-container"></div>
+  </div>
+</div>
+
+<!-- Narration bar -->
+<div id="narration-bar">
+  <div class="nb-section" id="nb-section-label">—</div>
+  <div class="nb-subtitle" id="nb-subtitle">Initialising voice model…</div>
+  <button class="nb-stop" onclick="stopNarration()">&#9646;&#9646; Stop</button>
+</div>
+
+<!-- TTS status toast -->
+<div id="tts-toast" style="display:none;position:fixed;top:72px;right:24px;background:#14112a;color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;z-index:400;border-left:4px solid var(--orange);max-width:300px;line-height:1.5;box-shadow:0 4px 20px rgba(0,0,0,0.3)"></div>
+
+
+<script type="module">
+/* ================================================================
+   GUIDE CONTENT
+   ----------------------------------------------------------------
+   Each section has:
+     id       - unique slug (used for navigation anchors)
+     title    - section heading
+     tag      - small label shown in header
+     icon     - emoji icon
+     color    - one of: 'blue','cyan','purple','orange','magenta'
+     content  - HTML string for the body
+     narration - text that will be spoken aloud (plain text only)
+   ================================================================ */
+
+const GUIDE_SECTIONS = [
+  {
+    id: 'welcome',
+    title: 'Welcome to SWB ICU',
+    tag: 'Introduction',
+    icon: '🏥',
+    color: 'purple',
+    content: `
+      <p>Welcome to Sandwell and West Birmingham ICU. This guide walks you through how our department works, what we expect from everyone in the medical team, and how to get the best out of your time here.</p>
+      <p>Use the sidebar to navigate between sections. Each section has a play button so you can listen to a narrated explanation while you read. Or press <strong>Start narrated guide</strong> at the top to go through everything in sequence.</p>
+      <div class="callout callout-key">
+        <strong>Contents</strong>
+        Team structure · Ward rounds · Safety briefs · Handover · Education · Research · Incidents · Prescriptions · Discharge · Communication · Help &amp; support · Uniform · Get involved
+      </div>
+    `,
+    narration: `Welcome to SWB ICU. This guide covers how the medical team is organised, what we expect from you day to day, and how to get the most out of your time here. Use the sidebar to jump to any section, or press Start to go through everything in order. It should take around ten minutes to go through the whole thing.`
+  },
+
+  {
+    id: 'team-structure',
+    title: 'ICU Team Structure',
+    tag: 'How we\'re organised',
+    icon: '👥',
+    color: 'blue',
+    content: `
+      <p>The SWB ICU medical team is made up of four core roles working closely alongside senior nursing staff.</p>
+      <div class="role-grid">
+        <div class="role-card" style="background:#eef4fb;">
+          <div style="font-size:26px">⚕️</div>
+          <div class="role-name" style="color:var(--blue)">Consultant</div>
+          <div class="role-desc">Overall clinical lead. Present on unit during the day. Leads ward rounds, coordinates care, provides supervision.</div>
+        </div>
+        <div class="role-card" style="background:#edf9fb;">
+          <div style="font-size:26px">🩺</div>
+          <div class="role-name" style="color:var(--cyan)">Registrar (SpR)</div>
+          <div class="role-desc">Day-to-day clinical running of the unit. Leads rounds with consultant input. On-site overnight.</div>
+        </div>
+        <div class="role-card" style="background:#f5f0ff;">
+          <div style="font-size:26px">👨‍⚕️</div>
+          <div class="role-name" style="color:var(--purple)">SHO / Fellow</div>
+          <div class="role-desc">Patient preparation, procedures, documentation. Supervised by registrar and consultant. Supported to develop ICU skills.</div>
+        </div>
+        <div class="role-card" style="background:#fff4e8;">
+          <div style="font-size:26px">🏅</div>
+          <div class="role-name" style="color:var(--orange)">ACCP</div>
+          <div class="role-desc">Advanced Critical Care Practitioner. Highly skilled non-medical clinicians working alongside the medical team in all aspects of care.</div>
+        </div>
+        <div class="role-card" style="background:#fdeef5;">
+          <div style="font-size:26px">👩‍⚕️</div>
+          <div class="role-name" style="color:var(--magenta)">Senior Nurse</div>
+          <div class="role-desc">Shift coordinator. Central to patient safety, escalation, and day-to-day unit management.</div>
+        </div>
+      </div>
+      <div class="callout callout-info">
+        <strong>Note</strong>
+        Job role cards for each position are available in the ICU — these give a one-page summary of responsibilities per shift.
+      </div>
+    `,
+    narration: `The medical team has four core roles. Consultants lead the unit and are physically present during the day — they run ward rounds, coordinate care, and provide supervision. Registrars run the day-to-day clinical work and are on-site overnight. SHOs support the team and develop their ICU skills under supervision. And ACCPs — Advanced Critical Care Practitioners — are highly skilled non-medical clinicians who work alongside doctors across all aspects of care, including procedures and prescribing.`
+  },
+
+  {
+    id: 'daytime',
+    title: 'Daytime Structure',
+    tag: 'Working hours',
+    icon: '🌤',
+    color: 'cyan',
+    content: `
+      <p>During the day the unit runs with a full team. Consultants are physically present and leading the clinical work.</p>
+      <div class="timeline">
+        <div class="tl-block" style="background:var(--blue);flex:2">Morning<small>Handover + ward round</small></div>
+        <div class="tl-block" style="background:var(--cyan);flex:3">Daytime<small>Business rounds, procedures, admissions</small></div>
+        <div class="tl-block" style="background:var(--purple);flex:1">Evening handover<small>Day → Night</small></div>
+      </div>
+      <h3>Key points</h3>
+      <ul>
+        <li>Consultant presence on the unit throughout the day — use them early.</li>
+        <li>Multiple registrars covering different areas depending on unit size and activity.</li>
+        <li>SHOs and ACCPs are allocated to bed areas each shift.</li>
+        <li>Check the daily allocation board to know your area and patients.</li>
+        <li>Daytime is also when education sessions, procedures, and family meetings happen — plan ahead.</li>
+      </ul>
+      <div class="callout callout-info">
+        <strong>Getting started</strong>
+        Arrive before handover. Know which area you're covering. Review your patients on EPR before the ward round.
+      </div>
+    `,
+    narration: `During the day the unit runs with a full team — consultants present, registrars covering clinical areas, SHOs and ACCPs allocated to bed zones. Check the daily allocation board at the start of your shift to know which area you're covering and who your patients are. Arrive before handover and review your patients on EPR so you're ready to go. Daytime is also when education, family meetings, and elective procedures happen, so plan ahead.`
+  },
+
+  {
+    id: 'ward-rounds',
+    title: 'Ward Rounds',
+    tag: 'Daily clinical work',
+    icon: '📋',
+    color: 'blue',
+    content: `
+      <p>Ward rounds are central to how we work. There are two types: the main consultant-led ward round, and the business round — a focused walkaround between rounds to review progress and update actions.</p>
+      <h3>Your responsibilities for each round</h3>
+      <ul>
+        <li><strong>Shared prep.</strong> Everyone contributes — don't wait to be asked. Prep patients as you arrive on shift.</li>
+        <li><strong>Updated EPR.</strong> Records should be current at the time of the round, not written afterwards.</li>
+        <li><strong>Contemporary active problems.</strong> Know the live problems, not just a historical list.</li>
+        <li><strong>Action list.</strong> Have a clear action list ready to present — not just a passive summary.</li>
+        <li><strong>Present your patient.</strong> You are expected to know and lead the presentation.</li>
+        <li><strong>Use the EPR worklist.</strong> This is the live version of actions — keep it updated throughout the day.</li>
+      </ul>
+      <h3>On the round</h3>
+      <ul>
+        <li>Pay attention to all patients, not just ones you have prepped.</li>
+        <li>Engage with the bedside nurse during each patient review.</li>
+        <li>Do not use your phone during the ward round.</li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>Important</strong>
+        Examine the patient. Discuss with the bedside nurse. Collate and summarise the information before presenting. Do not present from memory alone.
+      </div>
+    `,
+    narration: `Ward rounds are central to how we work, and there are two types: the main consultant-led round, and the business round — a focused walkaround during the day to review progress and update actions. For both, you're expected to prep your patients beforehand: updated EPR, contemporary active problems listed, and a clear action plan ready. You present your patients — not just summarise them — and you use the EPR worklist to keep actions live throughout the shift. Pay attention to all patients on the round, not just your own, and please don't use your phone.`
+  },
+
+  {
+    id: 'patient-records',
+    title: 'Patient Records',
+    tag: 'Documentation',
+    icon: '📝',
+    color: 'purple',
+    content: `
+      <p>Good documentation is a safety imperative, not an administrative task. Every entry in the patient record carries your name — make sure it reflects high standards.</p>
+      <h3>Core principles</h3>
+      <ul>
+        <li><strong>Accurate</strong> — reflects the clinical reality of the patient at that time.</li>
+        <li><strong>Contemporaneous</strong> — written at the time, or as close to it as possible.</li>
+        <li><strong>Succinct</strong> — focused and purposeful. Avoid repetition and vague phrasing.</li>
+      </ul>
+      <h3>Before documenting</h3>
+      <ul>
+        <li>Examine the patient yourself.</li>
+        <li>Discuss the patient's status with the bedside nurse.</li>
+        <li>Collate the relevant information — investigations, trends, family communication.</li>
+        <li>Then summarise clearly with your assessment and plan.</li>
+      </ul>
+      <div class="callout callout-key">
+        <strong>Remember</strong>
+        If it isn't documented, it didn't happen. Clear records protect the patient and protect you.
+      </div>
+    `,
+    narration: `Good documentation is a safety requirement, not a paperwork exercise. Records need to be accurate, contemporaneous, and succinct — written at the time, not reconstructed later. Before documenting, examine the patient, talk to the bedside nurse, and collate the relevant information. Then summarise clearly with your assessment and plan. Clear records protect your patients and protect you.`
+  },
+
+  {
+    id: 'out-of-hours',
+    title: 'Out of Hours',
+    tag: 'Night working',
+    icon: '🌙',
+    color: 'magenta',
+    content: `
+      <p>Overnight the unit runs with a reduced but focused medical team. The structure changes, but the standard of care does not.</p>
+      <div class="timeline">
+        <div class="tl-block" style="background:var(--purple);flex:1">Evening<small>Handover</small></div>
+        <div class="tl-block" style="background:var(--magenta);flex:3">Night<small>Registrar on-site, ACCPs, SHOs</small></div>
+        <div class="tl-block" style="background:var(--blue);flex:1">Morning<small>Handover</small></div>
+      </div>
+      <h3>Night team structure</h3>
+      <ul>
+        <li>A registrar is on-site throughout the night, supported by ACCPs and SHOs where rostered.</li>
+        <li>Consultants are contactable by phone and will attend for significant clinical events.</li>
+        <li>The baton phone is the central communication tool — covered in the Communication section.</li>
+      </ul>
+      <h3>Escalation at night</h3>
+      <ul>
+        <li>Escalate early — don't wait until a situation is critical before calling the consultant.</li>
+        <li>If in doubt, call. There is no such thing as a silly question on night shift.</li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>Safety brief at night</strong>
+        Ensure the safety brief sheets are completed and current at the start of the night. These are your reference point if things change quickly.
+      </div>
+    `,
+    narration: `Out of hours the unit runs with a reduced but focused team. A registrar is on-site throughout the night, supported by ACCPs and SHOs where rostered. Consultants are on call by phone and will come in for significant clinical events. The standard of care doesn't change at night — but escalation becomes even more important. Call early, before situations become critical. There is no such thing as a silly question on a night shift.`
+  },
+
+  {
+    id: 'safety-briefs',
+    title: 'Safety Brief Sheets',
+    tag: 'Patient safety',
+    icon: '🛡',
+    color: 'cyan',
+    content: `
+      <p>SWB ICU uses standardised safety brief sheets for every patient. These are a key safety tool — not optional, and not an afterthought.</p>
+      <h3>What they provide</h3>
+      <ul>
+        <li>A concise, structured SBAR summary per patient.</li>
+        <li>A consistent overview accessible to all members of the team — doctors, nurses, and allied health professionals.</li>
+        <li>A prompt for active safety considerations: lines, drugs, skin, VTE, goals of care.</li>
+      </ul>
+      <h3>Your responsibility</h3>
+      <ul>
+        <li>Ensure the brief sheet for your patients is updated during your shift.</li>
+        <li>Use it actively — refer to it, don't just file it.</li>
+        <li>If something changes, update the sheet.</li>
+      </ul>
+      <div class="callout callout-info">
+        <strong>Why this matters</strong>
+        In a busy ICU with frequent shift changes, standardised summaries prevent information loss at handover and during emergencies.
+      </div>
+    `,
+    narration: `We use standardised safety brief sheets for every patient. They give a concise structured summary — lines, drugs, skin, VTE, goals of care — and provide a consistent overview for the whole team, not just the medical staff. Keep the sheets for your patients updated during your shift and use them actively. They're especially valuable at handover and in an emergency, when you need clear accurate information quickly.`
+  },
+
+  {
+    id: 'handover',
+    title: 'Handover',
+    tag: 'Patient safety',
+    icon: '🔄',
+    color: 'orange',
+    content: `
+      <p>Handover is one of the highest-risk moments in any patient's journey. We take it seriously.</p>
+      <h3>Structure</h3>
+      <ul>
+        <li>We use <strong>SBAR format</strong> — Situation, Background, Assessment, Recommendation — for each patient.</li>
+        <li>Every patient is covered — including those referred but not yet admitted.</li>
+        <li>The night team provides a specific prompt about any incidents or concerns that need to be raised with the day consultant.</li>
+      </ul>
+      <h3>Expectations</h3>
+      <ul>
+        <li>Be on time. Handover starts at a fixed time — your colleagues are going home or starting a long shift.</li>
+        <li>Know your patients well enough to hand them over clearly without reading everything from a screen.</li>
+        <li>Listen actively — handover is a two-way safety check, not just a recitation.</li>
+        <li>Ask questions if anything is unclear.</li>
+      </ul>
+      <div class="callout callout-key">
+        <strong>SBAR reminder</strong>
+        <strong>S</strong>ituation — what is happening right now? <strong>B</strong>ackground — why is this patient here? <strong>A</strong>ssessment — how are they? <strong>R</strong>ecommendation — what needs to happen next?
+      </div>
+    `,
+    narration: `Handover is one of the highest-risk moments in a patient's journey, and we treat it seriously. We use SBAR for every patient — Situation, Background, Assessment, Recommendation — including patients referred but not yet admitted to the unit. Be on time, because your colleagues are either going home or starting a long shift. Know your patients well enough to hand them over without reading everything off a screen. And listen actively — a good handover is a two-way safety check, not just a recitation. The night team also flags any overnight incidents at morning handover.`
+  },
+
+  {
+    id: 'education',
+    title: 'Education & Development',
+    tag: 'Professional growth',
+    icon: '📚',
+    color: 'cyan',
+    content: `
+      <p>SWB ICU is committed to education at every level. Whether you are a core trainee rotating through for the first time or a senior registrar on an ICM post, there is a structured programme for you.</p>
+      <h3>Teaching programme</h3>
+      <ul>
+        <li>Morning education sessions — before the ward round where possible.</li>
+        <li>Journal club — regular critical appraisal of current literature.</li>
+        <li>Ward round teaching — deliberate teaching embedded in clinical work.</li>
+        <li>Patient management discussions — case-based learning from complex patients.</li>
+        <li>Self-directed learning — you are expected to take ownership of your own development.</li>
+      </ul>
+      <h3>Supervision</h3>
+      <ul>
+        <li>Every doctor in the unit has access to clinical and educational supervision.</li>
+        <li>Identify your educational supervisor early and raise any requirements at the start of your post — not weeks in.</li>
+        <li>We will highlight opportunities to you, but you need to engage with them.</li>
+      </ul>
+      <div class="callout callout-key">
+        <strong>The Critical CARE Course</strong>
+        This is a core educational resource for our unit. You are expected to understand and know the material within it. This is not optional background reading — it is the foundation of safe practice here.
+      </div>
+    `,
+    narration: `SWB ICU has a structured teaching programme — morning education sessions, journal club, ward round teaching, and patient management discussions. You're also expected to take ownership of your own self-directed learning. Every doctor has access to clinical and educational supervision, so identify your supervisor early and raise your requirements at the start of your post, not weeks in. The Critical CARE Course is a core resource here — you're expected to know the material within it. That's not optional background reading; it's foundational to safe practice in this unit.`
+  },
+
+  {
+    id: 'research',
+    title: 'Research & Audit',
+    tag: 'Active participation',
+    icon: '🔬',
+    color: 'blue',
+    content: `
+      <p>SWB ICU is a research active department. Participation in research is something we expect from the whole team, and there are genuine opportunities for development here.</p>
+      <h3>Research</h3>
+      <ul>
+        <li>You will be introduced to the studies currently running in the unit.</li>
+        <li>The team will explain what is expected of you in terms of participation and consent.</li>
+        <li>Some studies require specific training even if you are not listed on the delegation log — ABBRUPT is a current example. Ask about this specifically.</li>
+      </ul>
+      <h3>Audit & QIPP</h3>
+      <ul>
+        <li>QIPP stands for Quality, Innovation, Productivity and Prevention.</li>
+        <li>There are active audit and QIPP projects running in the unit — ask to be involved.</li>
+        <li>If you have an idea for an improvement project, bring it to the team.</li>
+      </ul>
+      <div class="callout callout-info">
+        <strong>Getting involved</strong>
+        Research involvement is noted and valued. If you have a particular interest or ongoing project from a previous post, let us know.
+      </div>
+    `,
+    narration: `SWB ICU is a research active department and participation is something we expect from the whole team. You'll be introduced to the studies currently running and what's required of you. Some studies need specific training even if you're not listed on the delegation log — ABBRUPT is a current example, so ask about this specifically when you start. There are also ongoing audit and QIPP projects — Quality, Innovation, Productivity and Prevention — and if you have an improvement idea of your own, bring it to us.`
+  },
+
+  {
+    id: 'incidents',
+    title: 'Incident Reporting',
+    tag: 'Patient safety',
+    icon: '⚠️',
+    color: 'orange',
+    content: `
+      <p>Incident reporting is a professional responsibility. A safety culture depends on people raising concerns promptly — not retrospectively, and not only when something goes badly wrong.</p>
+      <h3>When to report</h3>
+      <ul>
+        <li>Any time something goes wrong — or nearly goes wrong — with a patient, a process, or equipment.</li>
+        <li>Near misses are just as important as incidents — they reveal risks before harm occurs.</li>
+      </ul>
+      <h3>How to escalate immediately</h3>
+      <ul>
+        <li>Raise any incident with the consultant of the day as soon as it occurs.</li>
+        <li>Don't wait until the next handover if it's significant — call the consultant directly.</li>
+      </ul>
+      <h3>At morning handover</h3>
+      <ul>
+        <li>There is a specific prompt at morning handover from the night team to flag any incidents from overnight.</li>
+        <li>This is a structured safety check — take it seriously and be honest.</li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>Early escalation</strong>
+        Small problems raised early are manageable. Small problems left unreported become serious ones. Timeliness is everything.
+      </div>
+    `,
+    narration: `Incident reporting is a professional responsibility and a safety culture depends on people raising concerns promptly. This includes near misses — they reveal risks before harm occurs. Raise any incident with the consultant of the day as soon as it happens; don't hold it until the next handover. At morning handover there's a specific prompt for the night team to flag overnight events — take it seriously and be honest. Small problems flagged early are manageable; the same problems left unreported become serious ones.`
+  },
+
+  {
+    id: 'prescribing',
+    title: 'Prescriptions & Drug Management',
+    tag: 'Medicines safety',
+    icon: '💊',
+    color: 'magenta',
+    content: `
+      <p>Prescribing in ICU is a high-stakes activity. Please follow our specific approach to minimise errors and ensure safe, governed prescriptions.</p>
+      <h3>Core rules</h3>
+      <ul>
+        <li><strong>Use ICU medication folders.</strong> These are the preferred prescribing method — they have built-in governance and dose limits.</li>
+        <li><strong>Avoid free-texting prescriptions.</strong> Free-text orders have no embedded limits or safety checks. Use them only when there is no alternative.</li>
+        <li><strong>End medications no longer being given.</strong> Keeping inactive prescriptions active creates confusion and error risk.</li>
+      </ul>
+      <h3>Specific focus areas</h3>
+      <ul>
+        <li><strong>Red list drugs</strong> — be aware of and adhere to the red list at all times.</li>
+        <li><strong>Antipsychotics for delirium</strong> — review any started on ICU at the point of ward discharge. Ensure the receiving team is aware and that continuation is intentional, not accidental.</li>
+      </ul>
+      <div class="callout callout-imp">
+        <strong>If unsure</strong>
+        Ask the ICU pharmacist. They are an expert resource and an active part of the team — use them.
+      </div>
+    `,
+    narration: `Prescribing in ICU is high-stakes. Use the ICU medication folders as your default — they have built-in governance and dose limits that free-text prescriptions don't. Avoid free-texting wherever possible, and when you do, be especially careful. Make sure medications that are no longer being given are ended from the drug chart — inactive prescriptions cause confusion and errors. Pay attention to the red list at all times, and review any antipsychotics started for delirium before a patient goes to the ward. Their continuation should always be a conscious decision. If you're unsure about anything, ask the ICU pharmacist — they're an expert and an active part of this team.`
+  },
+
+  {
+    id: 'discharge',
+    title: 'Patient Discharge',
+    tag: 'Safe transitions',
+    icon: '🚪',
+    color: 'cyan',
+    content: `
+      <p>Discharge from ICU is a high-risk transition. The receiving team on the ward is taking on a patient who was recently critically ill — that handover carries significant responsibility.</p>
+      <h3>Two non-negotiable steps</h3>
+      <ul>
+        <li><strong>Phone handover.</strong> Always call the medical team in the receiving area before discharge. Not a message, not a referral letter — a direct call. Confirm they understand the patient and are ready to receive them.</li>
+        <li><strong>ICU Discharge proforma.</strong> Must be completed, fully updated, and accurate at the time of discharge — not filled in later. This is the receiving team's primary reference document.</li>
+      </ul>
+      <h3>Other considerations</h3>
+      <ul>
+        <li>Confirm active medication reviews are complete — particularly antipsychotics, anticoagulation, and weaning drugs.</li>
+        <li>Ensure any follow-up plan is clearly documented.</li>
+        <li>If there is any concern about the destination ward's ability to care for the patient safely, raise it before discharge.</li>
+      </ul>
+      <div class="callout callout-warn">
+        <strong>Never send a patient to the ward without both steps completed.</strong>
+      </div>
+    `,
+    narration: `Discharging a patient from ICU is a high-risk transition. There are two steps that are non-negotiable. First, a direct phone handover to the medical team in the receiving area — not a message, not a referral letter, a call. Confirm they understand the patient and are ready. Second, the ICU Discharge proforma must be completed, updated, and accurate at the time of discharge — not filled in afterwards. It's the receiving team's primary reference document for a patient who was recently critically ill. Never send someone to the ward without both of those done.`
+  },
+
+  {
+    id: 'communication',
+    title: 'Communication & Escalation',
+    tag: 'Baton phone & escalation',
+    icon: '📞',
+    color: 'blue',
+    content: `
+      <p>Clear communication is a patient safety tool. Know how to escalate, who to call, and when.</p>
+      <h3>The Baton Phone</h3>
+      <ul>
+        <li>The baton phone is the primary communication tool for the ICU medical team.</li>
+        <li>It is handed between the on-call doctors at each shift change — hence "baton."</li>
+        <li>Know who holds it at all times during your shift.</li>
+        <li>If you hold it, keep it on you and respond promptly.</li>
+      </ul>
+      <h3>When to escalate</h3>
+      <ul>
+        <li>Escalate early — uncertainty is a reason to call, not a reason to wait.</li>
+        <li>If a patient is deteriorating, call before the situation becomes critical.</li>
+        <li>If you are not sure of the escalation pathway, ask at the start of your shift — not in the middle of an emergency.</li>
+      </ul>
+      <div class="callout callout-key">
+        <strong>Escalation sequence</strong>
+        Registrar on-site → ICU Consultant of the day → Senior nurse coordinator → On-call team as appropriate
+      </div>
+    `,
+    narration: `Clear communication is a patient safety tool. The baton phone is the primary communication method for the ICU medical team — it gets passed between doctors at each shift change, hence the name. Know who holds it, keep it on you if you do, and respond promptly. When it comes to escalation, the principle is simple: call early. Uncertainty is a reason to phone, not a reason to wait. If you're unsure of the escalation pathway, get clarity at the start of your shift — not in the middle of an emergency.`
+  },
+
+  {
+    id: 'help-support',
+    title: 'Help & Support',
+    tag: 'Consultant availability',
+    icon: '🤝',
+    color: 'purple',
+    content: `
+      <p>You are not expected to manage difficult situations alone. Knowing when and how to ask for help is a clinical skill — not a weakness.</p>
+      <h3>Consultant availability</h3>
+      <ul>
+        <li>During the day, consultants are on the unit. Use them early and proactively.</li>
+        <li>Out of hours, consultants are on call and available by phone. They will attend when needed.</li>
+        <li>Leadership, coordination, and decision-making support are all available — don't hesitate to access them.</li>
+      </ul>
+      <h3>Educational support</h3>
+      <ul>
+        <li>Clinical and educational supervision is provided to all doctors on the unit.</li>
+        <li>If you are struggling with a clinical scenario, a procedure, or any aspect of the post, tell us early.</li>
+      </ul>
+      <h3>Personal wellbeing</h3>
+      <ul>
+        <li>ICU work is demanding. Rest when you can. Take your breaks.</li>
+        <li>If you are concerned about your own wellbeing or that of a colleague, speak to a consultant or the unit lead.</li>
+      </ul>
+      <div class="callout callout-info">
+        <strong>Open door</strong>
+        Consultants in SWB ICU want to hear from you. Whether it's about a patient or about your experience in the department — ask.
+      </div>
+    `,
+    narration: `You're not expected to manage difficult situations alone, and knowing when to ask for help is a genuine clinical skill. During the day consultants are on the unit — use them early and proactively, not just as a last resort. Out of hours they're on call and will come in when needed. If you're struggling with a clinical scenario, a procedure, or anything about the post itself, tell us early — we want to know. ICU work is demanding, so take your breaks and look after yourself. And if you have concerns about a colleague's wellbeing, come and speak to us.`
+  },
+
+  {
+    id: 'uniform',
+    title: 'Uniform & Appearance',
+    tag: 'Professional standards',
+    icon: '👔',
+    color: 'orange',
+    content: `
+      <p>SWB ICU has a specific uniform, and you are expected to follow it alongside the wider SWB NHS Trust uniform policy.</p>
+      <h3>Why it matters</h3>
+      <ul>
+        <li>A consistent, professional appearance supports patient and family trust.</li>
+        <li>ICU patients and families are often in significant distress — clear identification of roles is important.</li>
+        <li>Infection control requirements must be met at all times.</li>
+      </ul>
+      <h3>Key points</h3>
+      <ul>
+        <li>Wear the ICU uniform as directed. If unsure what to wear, ask your team lead on your first day.</li>
+        <li>Follow the bare below the elbows policy in clinical areas.</li>
+        <li>SWB Trust uniform policy documents are available on the intranet.</li>
+      </ul>
+      <div class="callout callout-info">
+        <strong>First impressions</strong>
+        Your appearance communicates professionalism and care. Patients notice, families notice, and so do colleagues.
+      </div>
+    `,
+    narration: `SWB ICU has a specific uniform and you're expected to wear it alongside the wider SWB Trust uniform policy. A consistent professional appearance matters here — our patients and families are often in significant distress, and clear identification of roles helps them. Follow bare below the elbows in all clinical areas. If you're not sure what to wear on your first day, ask your team lead. The full SWB uniform policy is available on the intranet.`
+  },
+
+  {
+    id: 'get-involved',
+    title: 'Get Involved & Make ICU Shine',
+    tag: 'Welcome to the team',
+    icon: '✨',
+    color: 'magenta',
+    content: `
+      <p>SWB ICU is a place that values its people. We want you to be more than just someone who shows up for their shift — we want you to be part of what makes this unit excellent.</p>
+      <h3>Ways to get involved</h3>
+      <ul>
+        <li>Contribute to audit and quality improvement projects.</li>
+        <li>Help with research — consent patients, support the research nurses, get trained on studies.</li>
+        <li>Teach — even as an SHO, you have knowledge to share. Medical students, nursing staff, and junior colleagues all benefit from peer teaching.</li>
+        <li>Bring ideas — if you see something that could work better, say so. We actively want to improve.</li>
+        <li>Look after your colleagues — team wellbeing is everyone's responsibility.</li>
+      </ul>
+      <div class="callout callout-key">
+        <strong>Welcome</strong>
+        Thank you for joining the SWB ICU team. We hope you find your time here valuable, challenging in the right ways, and something you look back on with pride.
+      </div>
+    `,
+    narration: `We want you to be part of what makes this unit excellent, not just someone covering a shift. Get involved in audit, research, and teaching — even as an SHO you have knowledge worth sharing. If you see something that could work better, bring it to us; we actively want to improve. Look after your colleagues, because team wellbeing is everyone's responsibility. Welcome to SWB ICU — we hope you find it challenging in the right ways and something you look back on with pride.`
+  }
+];
+
+/* ================================================================
+   COLOUR MAP
+   ================================================================ */
+const COLORS = {
+  blue:    'var(--blue)',
+  cyan:    'var(--cyan)',
+  purple:  'var(--purple)',
+  orange:  'var(--orange)',
+  magenta: 'var(--magenta)'
+};
+
+/* ================================================================
+   RENDER SECTIONS
+   ================================================================ */
+function renderSections() {
+  const nav = document.getElementById('nav-list');
+  const container = document.getElementById('sections-container');
+
+  GUIDE_SECTIONS.forEach((sec, idx) => {
+    const color = COLORS[sec.color] || COLORS.blue;
+
+    // Nav item
+    const a = document.createElement('a');
+    a.className = 'nav-item';
+    a.href = `#section-${sec.id}`;
+    a.dataset.id = sec.id;
+    a.innerHTML = `<span class="ni">${sec.icon}</span>${sec.title}`;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById(`section-${sec.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      closeSidebar();
+    });
+    nav.appendChild(a);
+
+    // Card
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.id = `section-${sec.id}`;
+    card.innerHTML = `
+      <div class="section-card-header" style="background:${color}">
+        <div class="sc-icon">${sec.icon}</div>
+        <div class="sc-titles">
+          <div class="sc-title">${sec.title}</div>
+          <div class="sc-tag">${sec.tag}</div>
+        </div>
+        <button class="sc-play" data-id="${sec.id}" title="Listen to narration" aria-label="Play narration">&#9654;</button>
+      </div>
+      <div class="section-card-body">${sec.content}</div>
+    `;
+
+    card.querySelector('.sc-play').addEventListener('click', () => playSectionById(sec.id));
+    container.appendChild(card);
+  });
+}
+
+/* ================================================================
+   INTERSECTION OBSERVER — highlight active nav item
+   ================================================================ */
+function initScrollSpy() {
+  const cards = document.querySelectorAll('.section-card');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id.replace('section-', '');
+        document.querySelectorAll('.nav-item').forEach(n => {
+          n.classList.toggle('active', n.dataset.id === id);
+        });
+      }
+    });
+  }, { rootMargin: '-60px 0px -60% 0px' });
+
+  cards.forEach(c => observer.observe(c));
+}
+
+/* ================================================================
+   WEB SPEECH API TTS
+   Works in every modern browser with no download required.
+   Voices are populated from whatever the browser/OS has installed.
+   ================================================================ */
+
+let stopRequested = false;
+let availableVoices = [];
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function showToast(msg, durationMs = 3000) {
+  const t = document.getElementById('tts-toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.display = 'none'; }, durationMs);
+}
+
+/* Load voices — Chrome fires voiceschanged async, Safari is sync */
+function loadVoices() {
+  return new Promise(resolve => {
+    const v = speechSynthesis.getVoices();
+    if (v.length) { availableVoices = v; resolve(v); return; }
+    speechSynthesis.addEventListener('voiceschanged', () => {
+      availableVoices = speechSynthesis.getVoices();
+      resolve(availableVoices);
+    }, { once: true });
+  });
+}
+
+/* Populate the voice selector with real browser voices */
+async function populateVoiceSelect() {
+  const voices = await loadVoices();
+  const select = document.getElementById('voice-select');
+  const english = voices.filter(v => v.lang.startsWith('en'));
+  if (!english.length) return;
+
+  select.innerHTML = '';
+  // British first, then others
+  const british = english.filter(v => v.lang === 'en-GB' || v.lang === 'en_GB');
+  const others  = english.filter(v => v.lang !== 'en-GB' && v.lang !== 'en_GB');
+  const ordered = [...british, ...others];
+
+  ordered.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v.name;
+    const flag = (v.lang === 'en-GB' || v.lang === 'en_GB') ? ' 🇬🇧' : '';
+    opt.textContent = `${v.name}${flag}`;
+    select.appendChild(opt);
+  });
+
+  // Auto-pick best British voice available
+  const best = british.find(v => /daniel|arthur|oliver|george|kate|serena/i.test(v.name))
+            || british[0]
+            || ordered[0];
+  if (best) select.value = best.name;
+}
+
+function getSelectedVoice() {
+  const name = document.getElementById('voice-select').value;
+  return availableVoices.find(v => v.name === name) || null;
+}
+
+/* Speak one sentence; resolves when finished */
+function speakSentence(text) {
+  return new Promise(resolve => {
+    // Workaround: cancel first to avoid Chrome's ~15s auto-cancel bug
+    speechSynthesis.cancel();
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = 'en-GB';
+    utt.rate  = 1.05;
+    utt.pitch = 1.0;
+
+    const voice = getSelectedVoice();
+    if (voice) utt.voice = voice;
+
+    utt.onend   = resolve;
+    utt.onerror = (e) => { console.warn('SpeechSynthesis error', e); resolve(); };
+
+    speechSynthesis.speak(utt);
+  });
+}
+
+function stopCurrentAudio() {
+  speechSynthesis.cancel();
+}
+
+/* Split narration text into sentences */
+function splitSentences(text) {
+  return text.match(/[^.!?]+[.!?]*/g)?.map(s => s.trim()).filter(Boolean) || [text];
+}
+
+/* Update the narration bar */
+function setNarrationBar(sectionTitle, currentSentence) {
+  document.getElementById('narration-bar').classList.add('visible');
+  document.getElementById('nb-section-label').textContent = sectionTitle;
+  document.getElementById('nb-subtitle').textContent = currentSentence || '…';
+}
+
+function hideNarrationBar() {
+  document.getElementById('narration-bar').classList.remove('visible');
+  document.querySelectorAll('.sc-play.active').forEach(b => {
+    b.classList.remove('active');
+    b.innerHTML = '&#9654;';
+  });
+}
+
+/* Play a single section */
+async function playSectionById(id) {
+  stopRequested = false;
+  stopCurrentAudio();
+
+  const sec = GUIDE_SECTIONS.find(s => s.id === id);
+  if (!sec) return;
+
+  if (availableVoices.length === 0) await loadVoices();
+
+  document.querySelectorAll('.sc-play').forEach(b => {
+    b.classList.remove('active');
+    b.innerHTML = '&#9654;';
+  });
+  const btn = document.querySelector(`.sc-play[data-id="${id}"]`);
+  if (btn) { btn.classList.add('active'); btn.innerHTML = '&#9646;&#9646;'; }
+
+  const sentences = splitSentences(sec.narration);
+
+  for (const sentence of sentences) {
+    if (stopRequested) break;
+    setNarrationBar(sec.title, sentence);
+    await speakSentence(sentence);
+    if (!stopRequested) await sleep(90);
+  }
+
+  if (btn) { btn.classList.remove('active'); btn.innerHTML = '&#9654;'; }
+  if (!stopRequested) hideNarrationBar();
+}
+
+/* Play all sections in sequence */
+async function playAllSections() {
+  stopRequested = false;
+
+  for (const sec of GUIDE_SECTIONS) {
+    if (stopRequested) break;
+    document.getElementById(`section-${sec.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    await sleep(700);
+    await playSectionById(sec.id);
+    await sleep(700);
+  }
+
+  hideNarrationBar();
+}
+
+function stopNarration() {
+  stopRequested = true;
+  stopCurrentAudio();
+  hideNarrationBar();
+}
+
+/* ================================================================
+   SIDEBAR TOGGLE (mobile)
+   ================================================================ */
+window.toggleSidebar = function() {
+  document.getElementById('sidebar').classList.toggle('open');
+};
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+};
+
+/* Expose to global scope for onclick handlers */
+window.playSectionById = playSectionById;
+window.playAllSections = playAllSections;
+window.stopNarration = stopNarration;
+
+/* ================================================================
+   INIT
+   ================================================================ */
+renderSections();
+initScrollSpy();
+populateVoiceSelect();
+
+</script>
+</body>
+</html>
